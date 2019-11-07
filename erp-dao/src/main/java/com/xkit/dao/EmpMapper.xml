@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xkit.dao.EmpMapper">
+
+    <select id="queryEmpByNameAndPwd" resultType="Emp">
+        select * from emp where USERNAME = #{username} and pwd = #{pwd}
+    </select>
+
+    <update id="updatePassword">
+        update emp set PWD = #{pwd} where id = #{id}
+    </update>
+</mapper>

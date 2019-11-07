@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xkit.dao.MenuMapper">
+
+    <resultMap id="menus" type="Menu" autoMapping="true">
+        <id property="menuid" javaType="String"  column="id" />
+        <collection property="menus" ofType="Menu" autoMapping="true" column="{pid=id,eid=eid}" select="querySubMenus" >
+        </collection>
+    </resultMap>
+    
+    <select id="queryMenus" resultMap="menus">
+      select m.*,e.id eid from menu m
+		INNER JOIN role_menu rm on m.id = rm.MENUId
+		inner join emp_role er on rm.ROLEId = er.ROLEId
+		inner join emp e on er.EMPId = e.id
+		where m.PID = 0 and e.id = #{eid}
+    </select>
+    <select id="querySubMenus" resultType="Menu">
+        select m.* from menu m
+		INNER JOIN role_menu rm on m.id = rm.MENUId
+		inner join emp_role er on rm.ROLEId = er.ROLEId
+		inner join emp e on er.EMPId = e.id
+		where m.PID = #{pid} and e.id = #{eid}
+    </select>
+
+</mapper>

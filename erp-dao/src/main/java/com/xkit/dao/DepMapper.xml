@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xkit.dao.DepMapper">
+
+    <select id="queryDeps" resultType="Dep" >
+        select * from dep
+        <where>
+            <if test="dep.name != null and dep.name != '' ">
+              and name like concat('%',#{dep.name},'%')
+            </if>
+            <if test="dep.tele != null and dep.tele != '' ">
+              and tele like concat('%',#{dep.tele},'%')
+            </if>
+            <if test="dep.id != null and dep.id != '' ">
+                and id = #{dep.id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveDep">
+        <choose>
+            <when test="dep.id != null and dep.id != '' ">
+                update dep set name = #{dep.name},tele = #{dep.tele} where id = #{dep.id}
+            </when>
+            <otherwise>
+                insert into dep values (default,#{dep.name},#{dep.tele})
+            </otherwise>
+        </choose>
+    </insert>
+    <delete id="delDep">
+        delete from dep where id =#{id}
+    </delete>
+</mapper>
